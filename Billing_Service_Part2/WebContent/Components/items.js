@@ -29,7 +29,7 @@ $(document).on("click", "#btnSave", function(event)
 	 
 	 $.ajax(
 	 {
-		 url : "ItemsAPI",
+		 url : "BillingServiceAPI",
 		 type : type,
 		 data : $("#formItem").serialize(),
 		 dataType : "text",
@@ -40,6 +40,7 @@ $(document).on("click", "#btnSave", function(event)
 	 });
 });
 
+
 function onItemSaveComplete(response, status)
 {
 	 if (status == "success")
@@ -47,7 +48,7 @@ function onItemSaveComplete(response, status)
 		 var resultSet = JSON.parse(response);
 		 if (resultSet.status.trim() == "success")
 		 {
-		 $("#alertSuccess").text("Successfully saved.");
+		 $("#alertSuccess").text("Record Successfully Saved!");
 		 $("#alertSuccess").show();
 		 
 		 $("#divItemsGrid").html(resultSet.data);
@@ -59,11 +60,11 @@ function onItemSaveComplete(response, status)
 		 
 	 } else if (status == "error")
 	 {
-		 $("#alertError").text("Error while saving.");
+		 $("#alertError").text("Error While Saving!");
 		 $("#alertError").show();
 	 } else
 	 {
-		 $("#alertError").text("Unknown error while saving..");
+		 $("#alertError").text("Unknown Error While Saving!");
 		 $("#alertError").show();
 	 }
 	 
@@ -75,19 +76,20 @@ function onItemSaveComplete(response, status)
 $(document).on("click", ".btnUpdate", function(event)
 {
 	$("#hidItemIDSave").val($(this).data("itemid"));;
-	$("#itemCode").val($(this).closest("tr").find('td:eq(0)').text());
-	$("#itemName").val($(this).closest("tr").find('td:eq(1)').text());
-	$("#itemPrice").val($(this).closest("tr").find('td:eq(2)').text());
-	$("#itemDesc").val($(this).closest("tr").find('td:eq(3)').text());
+	$("#account_no").val($(this).closest("tr").find('td:eq(0)').text());
+	$("#from_date").val($(this).closest("tr").find('td:eq(3)').text());
+	$("#to_date").val($(this).closest("tr").find('td:eq(5)').text());
+	$("#current_meter_reading").val($(this).closest("tr").find('td:eq(6)').text());
+	$("#status").val($(this).closest("tr").find('td:eq(11)').text());
 });
 
 $(document).on("click", ".btnRemove", function(event)
 {
 	 $.ajax(
 	 {
-		 url : "ItemsAPI",
+		 url : "BillingServiceAPI",
 		 type : "DELETE",
-		 data : "itemID=" + $(this).data("itemid"),
+		 data : "id=" + $(this).data("itemid"),
 		 dataType : "text",
 		 complete : function(response, status)
 	 {
@@ -103,7 +105,7 @@ function onItemDeleteComplete(response, status)
 		 var resultSet = JSON.parse(response);
 		 if (resultSet.status.trim() == "success")
 		 {
-		 $("#alertSuccess").text("Successfully deleted.");
+		 $("#alertSuccess").text("Record Successfully Deleted!");
 		 $("#alertSuccess").show();
 		 $("#divItemsGrid").html(resultSet.data);
 		 } else if (resultSet.status.trim() == "error")
@@ -113,11 +115,11 @@ function onItemDeleteComplete(response, status)
 	 }
 	 } else if (status == "error")
 	 {
-		 $("#alertError").text("Error while deleting.");
+		 $("#alertError").text("Error While Deleting!");
 		 $("#alertError").show();
 	 } else
 	 {
-		 $("#alertError").text("Unknown error while deleting..");
+		 $("#alertError").text("Unknown Error While Deleting!");
 		 $("#alertError").show();
 	 }
 }
@@ -126,36 +128,36 @@ function onItemDeleteComplete(response, status)
 function validateItemForm()
 {
 	// CODE
-	if ($("#itemCode").val().trim() == "")
+	if ($("#account_no").val().trim() == "")
 	{
-		return "Insert Item Code.";
+		return "Insert Account No!";
 	}
 		// NAME
-		if ($("#itemName").val().trim() == "")
+		if ($("#from_date").val().trim() == "")
 	{
-		return "Insert Item Name.";
+		return "Insert From Date!";
 	}
  
 	// PRICE-------------------------------
-	if ($("#itemPrice").val().trim() == "")
+	if ($("#to_date").val().trim() == "")
 	{
-		return "Insert Item Price.";
+		return "Insert To Date!";
 	}
 	
 	// is numerical value
-	var tmpPrice = $("#itemPrice").val().trim();
-	if (!$.isNumeric(tmpPrice))
+	var mtrReading = $("#current_meter_reading").val().trim();
+	if (!$.isNumeric(mtrReading))
 	{
-		return "Insert a numerical value for Item Price.";
+		return "Insert a Numarical Value for Current Meter Reading!";
 	}
 	
-	// convert to decimal price
-	$("#itemPrice").val(parseFloat(tmpPrice).toFixed(2));
+	// convert to integer
+	$("#current_meter_reading").val(parseInt(mtrReading));
 	
 	// DESCRIPTION------------------------
-	if ($("#itemDesc").val().trim() == "")
+	if ($("#status").val().trim() == "")
 	{
-		return "Insert Item Description.";
+		return "Insert Status!";
 	}
 	return true;
 }

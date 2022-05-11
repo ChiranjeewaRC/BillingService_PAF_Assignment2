@@ -1,6 +1,10 @@
 package model;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 public class BillingServiceAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	BillingModel billObj = new BillingModel();
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,7 +41,35 @@ public class BillingServiceAPI extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String output = billObj.insertBillingDetails(request.getParameter("account_no"),
+		request.getParameter("from_date"),
+		request.getParameter("to_date"),
+		Integer.parseInt(request.getParameter("current_meter_reading")),
+		request.getParameter("status"));
+		response.getWriter().write(output);
+	}
+	
+	private static Map getParasMap(HttpServletRequest request)
+	{
+		Map<String, String> map = new HashMap<String, String>();
+		try
+		{
+			Scanner scanner = new Scanner(request.getInputStream(), "UTF-8");
+			String queryString = scanner.hasNext() ?
+			scanner.useDelimiter("\\A").next() : "";
+			scanner.close();
+			String[] params = queryString.split("&");
+			
+			for (String param : params)
+			{ 
+				 String[] p = param.split("=");
+				 map.put(p[0], p[1]);
+			}
+		}
+			catch (Exception e)
+			{
+			}
+		return map;
 	}
 
 	/**
@@ -43,6 +77,15 @@ public class BillingServiceAPI extends HttpServlet {
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		Map paras = getParasMap(request);
+		String output = billObj.updateBillDetails(paras.get("hidItemIDSave").toString(),
+		paras.get("account_no").toString(),
+		paras.get("from_date").toString(),
+		paras.get("to_date").toString(),
+		paras.get("current_meter_reading").toString(),
+		paras.get("status").toString());
+		response.getWriter().write(output); 
+
 	}
 
 	/**
@@ -50,6 +93,9 @@ public class BillingServiceAPI extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		Map paras = getParasMap(request);
+		String output = billObj.deleteBillDetails(paras.get("id").toString());
+		response.getWriter().write(output); 
 	}
 
 }

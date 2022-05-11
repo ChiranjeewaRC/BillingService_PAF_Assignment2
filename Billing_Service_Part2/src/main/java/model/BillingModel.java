@@ -176,7 +176,7 @@ public class BillingModel {
 		}
 		
 		//Method to insert billing details
-		public String insertBillingDetails(String account_no, String from_date, String to_date, int cur_meter_reading, String status){
+		public String insertBillingDetails(String account_no, String from_date, String to_date, int current_meter_reading, String status){
 					
 			String output = "";		
 					
@@ -191,15 +191,15 @@ public class BillingModel {
 				String insertQuery = " insert into billing_service values (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				PreparedStatement pstmnt = con.prepareStatement(insertQuery);
 						
-				int prev_meter_reading = this.getPrevReading(account_no);
+				int previous_meter_reading = this.getPrevReading(account_no);
 
-				int no_of_units = this.calculateUnits(cur_meter_reading, prev_meter_reading);
+				int no_of_units = this.calculateUnits(current_meter_reading, previous_meter_reading);
 						
-				float arrears = this.getArrears(account_no, status);
+				float amount_in_arrears = this.getArrears(account_no, status);
 						
 				float current_amount = this.calculateCurrentAmount(no_of_units);
 						
-				float total_amount = this.calculateTotalAmount(no_of_units, arrears);
+				float total_amount = this.calculateTotalAmount(no_of_units, amount_in_arrears);
 						
 				String name = this.getUserName(account_no);
 						
@@ -217,12 +217,12 @@ public class BillingModel {
 				pstmnt.setString(2, name);
 				pstmnt.setString(3, address);
 				pstmnt.setString(4, from_date);
-				pstmnt.setInt(5, prev_meter_reading);
+				pstmnt.setInt(5, previous_meter_reading);
 				pstmnt.setString(6, to_date);
-				pstmnt.setInt(7, cur_meter_reading);
+				pstmnt.setInt(7, current_meter_reading);
 				pstmnt.setInt(8, no_of_units);
 				pstmnt.setFloat(9, current_amount);
-				pstmnt.setFloat(10, arrears);
+				pstmnt.setFloat(10, amount_in_arrears);
 				pstmnt.setFloat(11, total_amount);
 				pstmnt.setString(12, status);
 
@@ -440,6 +440,8 @@ public class BillingModel {
 					return name;
 					
 				}
+				
+				
 		
 		//Method for update bill details
 		public String updateBillDetails(String id, String account_no, String from_date , String to_date, String current_meter_reading, String status) {
