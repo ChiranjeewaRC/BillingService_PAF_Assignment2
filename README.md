@@ -1,39 +1,36 @@
 
 # ElectroGrid Project
 
-# Group No 69
+# IT No - IT20153168 - Chiranjeewa H. P. R. C
 
 # Data Science Batch 04 (Weenend)
 
 
 
 
-
-
 ## Developers
 
-- Sasini Herath (IT20226664)
 - Ravindu Chamod (IT20153168)
-- Nisal Daksith (IT20300746)
-- Halis Kaleel (IT20198718)
-- Sahan Alwis (IT20046798)
 
 ## Service Implementation
 
-- Payment Service - Sasini Herath
 - Billing Service - Ravindu Chamod
-- Power Monitoring Service - Nisal Daksith
-- Inquiry Service - Halis Kaleel
-- User Service - Sahan Alwis
 
-## Technology Used
+## Technology Used for Backend
 
 - Java Rest API(JAX-RS)
 - MySQL
 - Apache Tomcat Server
+
+## Technology Used for Fronend
+
+- HTML, CSS, Bootstrap
+- Form and Grid UI design pattern
+-  jQuery, Ajax for DC
 
 ## IDEs
 
 - Eclipse
 - MySQL Work Bench
 - Postman
+- Microsoft Edge for Load the Page
