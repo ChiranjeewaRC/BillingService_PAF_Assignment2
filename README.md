@@ -1,5 +1,5 @@
 
-# ElectroGrid Project
+# ElectroGrid Project Assignment 2
 
 # IT No - IT20153168 - Chiranjeewa H. P. R. C
 
